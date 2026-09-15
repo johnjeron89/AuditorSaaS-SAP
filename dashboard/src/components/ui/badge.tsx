@@ -3,20 +3,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-indigo-600 text-white hover:bg-indigo-700",
-        secondary: "border-transparent bg-slate-100 text-slate-900 hover:bg-slate-200",
-        destructive: "border-transparent bg-red-600 text-white hover:bg-red-700",
-        outline: "text-foreground",
-        critical: "border-transparent bg-red-600 text-white",
-        high: "border-transparent bg-orange-500 text-white",
-        medium: "border-transparent bg-yellow-500 text-white",
-        low: "border-transparent bg-green-500 text-white",
-        pass: "border-transparent bg-green-500 text-white",
-        fail: "border-transparent bg-red-600 text-white",
+        default: "border-white/10 bg-white/[0.05] text-white/80",
+        secondary: "border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.05]",
+        destructive: "border-red-500/20 bg-red-500/10 text-red-400",
+        outline: "text-white/70 border-white/10",
+        critical: "border-red-500/20 bg-red-500/10 text-red-400 shadow-[0_0_10px_rgba(239,68,68,0.2)]",
+        high: "border-orange-500/20 bg-orange-500/10 text-orange-400 shadow-[0_0_10px_rgba(249,115,22,0.2)]",
+        medium: "border-yellow-500/20 bg-yellow-500/10 text-yellow-400 shadow-[0_0_10px_rgba(234,179,8,0.2)]",
+        low: "border-green-500/20 bg-green-500/10 text-green-400 shadow-[0_0_10px_rgba(34,197,94,0.2)]",
+        pass: "border-green-500/20 bg-green-500/10 text-green-400",
+        fail: "border-red-500/20 bg-red-500/10 text-red-400",
       },
     },
     defaultVariants: {

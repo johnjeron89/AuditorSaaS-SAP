@@ -27,12 +27,12 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div>
-          <div className="text-sm text-muted-foreground mb-1">{run.tenant?.name}</div>
-          <h1 className="text-3xl font-bold flex items-center gap-3">
+          <div className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-1">{run.tenant?.name}</div>
+          <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             {run.framework} Audit
-            <Badge variant={getStatusColor(run.status) as any}>{run.status}</Badge>
+            <Badge variant={getStatusColor(run.status) as any} className="rounded-full">{run.status}</Badge>
           </h1>
-          <div className="text-sm text-muted-foreground mt-2">
+          <div className="text-sm text-white/50 mt-2">
             Started: {run.started_at ? new Date(run.started_at).toLocaleString() : 'Pending'}
             {run.completed_at && ` • Completed: ${new Date(run.completed_at).toLocaleString()}`}
           </div>
@@ -40,13 +40,13 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
         
         <div className="flex items-center gap-4">
           {run.score !== null && (
-            <div className="text-center p-4 bg-white dark:bg-slate-900 border rounded-lg shadow-sm">
-              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{run.score}%</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mt-1">Overall Score</div>
+            <div className="text-center p-4 bg-white/[0.02] border border-white/10 rounded-none shadow-sm">
+              <div className="text-3xl font-bold tracking-tight text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">{run.score}%</div>
+              <div className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-semibold mt-1">Overall Score</div>
             </div>
           )}
           {run.report_url && (
-            <Button variant="outline" asChild>
+            <Button variant="outline" className="border-white/25 bg-white/[0.05] text-white rounded-none hover:bg-white/[0.1] hover:text-white" asChild>
               <a href={run.report_url} target="_blank" rel="noopener noreferrer">
                 <Download className="h-4 w-4 mr-2" /> Download PDF
               </a>
@@ -58,7 +58,7 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
       <AuditProgress runId={run.id} />
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">Findings</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-white mb-4">Findings</h2>
         <FindingsTable findings={findings || []} />
       </div>
     </div>

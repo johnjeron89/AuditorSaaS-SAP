@@ -20,22 +20,22 @@ export function AuditRunCard({ run, tenantName }: AuditRunCardProps) {
 
   return (
     <Link href={`/dashboard/tenants/${run.tenant_id}/runs/${run.id}`}>
-      <Card className="hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+      <Card className="border border-white/10 bg-white/[0.02] rounded-none hover:bg-white/[0.04] transition-colors duration-300">
         <CardContent className="flex items-center justify-between p-4">
           <div>
-            <div className="font-semibold text-sm">
-              {tenantName && <span className="mr-2 text-muted-foreground">{tenantName}</span>}
+            <div className="font-medium tracking-tight text-white text-sm">
+              {tenantName && <span className="mr-2 text-white/40 eyebrow">{tenantName}</span>}
               {run.framework}
             </div>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-xs text-white/40 mt-1">
               {new Date(run.created_at).toLocaleString()}
             </div>
           </div>
           <div className="flex items-center gap-4">
             {run.score !== null && (
-              <div className="text-sm font-medium">Score: {run.score}%</div>
+              <div className="text-sm font-medium text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">Score: {run.score}%</div>
             )}
-            <Badge variant={getStatusColor(run.status) as any}>{run.status}</Badge>
+            <Badge variant={getStatusColor(run.status) as any} className="rounded-full">{run.status}</Badge>
           </div>
         </CardContent>
       </Card>

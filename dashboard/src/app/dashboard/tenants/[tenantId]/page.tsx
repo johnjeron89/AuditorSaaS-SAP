@@ -16,23 +16,23 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ t
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-3">
+          <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             {tenant.name}
-            <Badge variant="secondary">{tenant.platform}</Badge>
+            <Badge variant="secondary" className="rounded-full bg-white/[0.05] text-white hover:bg-white/[0.1] border-white/10">{tenant.platform}</Badge>
           </h1>
-          <p className="text-muted-foreground mt-1">Tenant Details & Audits</p>
+          <p className="text-white/50 mt-1">Tenant Details & Audits</p>
         </div>
         <RunAuditButton tenantId={tenant.id} />
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">Audit Runs</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-white mb-4">Audit Runs</h2>
         <div className="space-y-3">
           {runs?.map(run => (
             <AuditRunCard key={run.id} run={run} />
           ))}
           {(!runs || runs.length === 0) && (
-            <p className="text-muted-foreground text-sm">No audit runs yet.</p>
+            <p className="text-white/50 text-sm">No audit runs yet.</p>
           )}
         </div>
       </div>

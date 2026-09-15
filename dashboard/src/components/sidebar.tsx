@@ -31,10 +31,9 @@ export function Sidebar() {
   ]
 
   return (
-    <div className="flex h-full w-64 flex-col bg-slate-900 text-slate-300">
-      <div className="flex h-16 items-center px-6 text-white font-bold text-xl gap-2 border-b border-slate-800">
-        <Shield className="h-6 w-6 text-indigo-500" />
-        Auditer
+    <div className="flex h-full w-64 flex-col bg-[#050505] text-white/60 border-r border-white/10 font-geist">
+      <div className="flex h-16 items-center px-6 text-white font-semibold tracking-tight text-xl gap-2 border-b border-white/5">
+        <span>SAPVYRA<span className="text-white/40">.</span></span>
       </div>
       <div className="flex-1 py-6 px-4 space-y-1">
         {links.map((link) => {
@@ -45,8 +44,8 @@ export function Sidebar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                isActive ? "bg-indigo-600 text-white" : "hover:bg-slate-800 hover:text-white"
+                "flex items-center gap-3 rounded-none px-3 py-2 text-[15px] font-medium transition-colors duration-300",
+                isActive ? "bg-white/[0.05] text-white border-l-2 border-blue-400" : "hover:text-white hover:bg-white/[0.02]"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -55,11 +54,11 @@ export function Sidebar() {
           )
         })}
       </div>
-      <div className="p-4 border-t border-slate-800">
-        <div className="text-xs truncate mb-2 px-2">{email}</div>
+      <div className="p-4 border-t border-white/5">
+        <div className="text-xs truncate mb-2 px-2 text-white/40 eyebrow">{email}</div>
         <button
           onClick={handleSignOut}
-          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium hover:bg-slate-800 hover:text-white transition-colors"
+          className="flex w-full items-center gap-2 rounded-none px-2 py-2 text-[15px] font-medium hover:bg-white/[0.02] hover:text-white transition-colors duration-300"
         >
           <LogOut className="h-4 w-4" />
           Sign Out

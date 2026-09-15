@@ -76,21 +76,21 @@ export default function NewTenantPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Add New Tenant</h1>
-      <Card>
+      <h1 className="text-3xl font-bold tracking-tight text-white">Add New Tenant</h1>
+      <Card className="border border-white/10 bg-white/[0.02] rounded-none">
         <CardHeader>
-          <CardTitle>Tenant Details</CardTitle>
-          <CardDescription>Connect a new Google Workspace environment.</CardDescription>
+          <CardTitle className="text-xl tracking-tight text-white">Tenant Details</CardTitle>
+          <CardDescription className="text-white/50">Connect a new Google Workspace environment.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Tenant Name</label>
-              <Input required value={name} onChange={e => setName(e.target.value)} placeholder="Acme Corp Workspace" />
+              <label className="text-sm font-medium text-white/60">Tenant Name</label>
+              <Input required value={name} onChange={e => setName(e.target.value)} placeholder="Acme Corp Workspace" className="bg-transparent border-white/10 rounded-none text-white focus-visible:ring-blue-400 focus-visible:ring-offset-0 focus-visible:border-blue-400" />
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium">Platform</label>
+              <label className="text-sm font-medium text-white/60">Platform</label>
               <Select value={platform} onChange={e => setPlatform(e.target.value)} required>
                 <option value="google_workspace">Google Workspace</option>
                 <option value="microsoft_365" disabled>Microsoft 365 (Coming soon)</option>
@@ -98,19 +98,19 @@ export default function NewTenantPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Admin Email to Impersonate</label>
-              <Input type="email" required value={adminEmail} onChange={e => setAdminEmail(e.target.value)} placeholder="admin@example.com" />
+              <label className="text-sm font-medium text-white/60">Admin Email to Impersonate</label>
+              <Input type="email" required value={adminEmail} onChange={e => setAdminEmail(e.target.value)} placeholder="admin@example.com" className="bg-transparent border-white/10 rounded-none text-white focus-visible:ring-blue-400 focus-visible:ring-offset-0 focus-visible:border-blue-400" />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Service Account Credentials (JSON)</label>
-              <Input type="file" accept=".json" required onChange={e => setFile(e.target.files?.[0] || null)} />
-              <p className="text-xs text-muted-foreground">Upload the JSON key for a service account with Domain-Wide Delegation enabled.</p>
+              <label className="text-sm font-medium text-white/60">Service Account Credentials (JSON)</label>
+              <Input type="file" accept=".json" required onChange={e => setFile(e.target.files?.[0] || null)} className="bg-transparent border-white/10 rounded-none text-white/60 file:bg-white/[0.05] file:text-white file:border-0 hover:file:bg-white/[0.1] focus-visible:ring-blue-400 focus-visible:ring-offset-0 focus-visible:border-blue-400" />
+              <p className="text-xs text-white/40">Upload the JSON key for a service account with Domain-Wide Delegation enabled.</p>
             </div>
 
-            {error && <div className="text-red-500 text-sm p-2 bg-red-50 dark:bg-red-950/20 rounded">{error}</div>}
+            {error && <div className="text-red-400 text-sm p-2 bg-red-500/10 border border-red-500/20 rounded-none">{error}</div>}
 
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading} className="w-full bg-white text-black hover:bg-white/90 rounded-none">
               {loading ? 'Creating...' : 'Create Tenant'}
             </Button>
           </form>
