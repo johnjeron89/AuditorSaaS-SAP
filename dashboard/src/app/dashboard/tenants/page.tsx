@@ -18,14 +18,14 @@ export default async function TenantsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-white">Tenants</h1>
-        <Link href="/dashboard/tenants/new">
-          <Button className="bg-white text-black hover:bg-white/90 rounded-none">Add Tenant</Button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Tenants</h1>
+        <Link href="/dashboard/tenants/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto bg-white text-black hover:bg-white/90 rounded-none">Add Tenant</Button>
         </Link>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mappedTenants.map((tenant: any) => (
           <TenantCard key={tenant.id} tenant={tenant} />
         ))}

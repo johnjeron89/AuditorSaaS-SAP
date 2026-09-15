@@ -33,13 +33,13 @@ export function RunAuditButton({ tenantId }: { tenantId: string }) {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <Select value={framework} onChange={e => setFramework(e.target.value)} className="w-40 bg-transparent border-white/10 rounded-none text-white focus-visible:ring-blue-400" disabled={loading}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+      <Select value={framework} onChange={e => setFramework(e.target.value)} className="w-full sm:w-40 min-h-[44px] bg-transparent border-white/10 rounded-none text-white focus-visible:ring-blue-400" disabled={loading}>
         <option value="CIS">CIS Google Workspace</option>
         <option value="GDPR">GDPR</option>
         <option value="SOC2">SOC 2</option>
       </Select>
-      <Button onClick={handleRun} disabled={loading} className="bg-white text-black hover:bg-white/90 rounded-none border border-transparent">
+      <Button onClick={handleRun} disabled={loading} className="w-full sm:w-auto min-h-[44px] bg-white text-black hover:bg-white/90 rounded-none border border-transparent">
         {loading ? 'Starting...' : 'Run Audit'}
       </Button>
     </div>

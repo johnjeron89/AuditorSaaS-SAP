@@ -33,7 +33,7 @@ export function AuditProgress({ runId }: { runId: string }) {
 
   return (
     <div className="border border-white/10 bg-white/[0.02] rounded-none p-4 mb-6">
-      <div className="flex justify-between text-sm mb-2 text-white/50">
+      <div className="flex flex-col sm:flex-row sm:justify-between text-sm mb-2 text-white/50 gap-1">
         <span className="font-medium tracking-tight">Audit in progress</span>
         <span>{completed} of {total} jobs completed</span>
       </div>

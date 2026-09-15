@@ -22,10 +22,10 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold tracking-tight text-white">Overview</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white animate-fade-in-up">Overview</h1>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-white/10 bg-white/[0.02] rounded-none">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="border-white/10 bg-white/[0.02] rounded-none animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-[10px] uppercase tracking-[0.2em] text-white/40">Total Tenants</CardTitle>
           </CardHeader>
@@ -33,7 +33,7 @@ export default async function DashboardPage() {
             <div className="text-2xl font-bold tracking-tight text-white">{tenantsCount || 0}</div>
           </CardContent>
         </Card>
-        <Card className="border-white/10 bg-white/[0.02] rounded-none">
+        <Card className="border-white/10 bg-white/[0.02] rounded-none animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-[10px] uppercase tracking-[0.2em] text-white/40">Total Runs</CardTitle>
           </CardHeader>
@@ -41,7 +41,7 @@ export default async function DashboardPage() {
             <div className="text-2xl font-bold tracking-tight text-white">{runsCount || 0}</div>
           </CardContent>
         </Card>
-        <Card className="border-white/10 bg-white/[0.02] rounded-none">
+        <Card className="border-white/10 bg-white/[0.02] rounded-none animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-[10px] uppercase tracking-[0.2em] text-white/40">Average Score</CardTitle>
           </CardHeader>
@@ -51,11 +51,13 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <div>
+      <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
         <h2 className="text-xl font-semibold tracking-tight text-white mb-4">Recent Audit Runs</h2>
         <div className="space-y-4">
-          {recentRuns?.map((run: any) => (
-            <AuditRunCard key={run.id} run={run} tenantName={run.tenant?.name} />
+          {recentRuns?.map((run: any, idx: number) => (
+            <div key={run.id} className="animate-fade-in-up" style={{ animationDelay: `${0.5 + idx * 0.1}s` }}>
+              <AuditRunCard run={run} tenantName={run.tenant?.name} />
+            </div>
           ))}
           {(!recentRuns || recentRuns.length === 0) && (
             <p className="text-white/50 text-sm">No recent runs.</p>

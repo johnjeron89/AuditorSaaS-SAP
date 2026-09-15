@@ -25,10 +25,10 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
           <div className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-1">{run.tenant?.name}</div>
-          <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex flex-wrap items-center gap-3">
             {run.framework} Audit
             <Badge variant={getStatusColor(run.status) as any} className="rounded-full">{run.status}</Badge>
           </h1>
@@ -38,7 +38,7 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
           </div>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           {run.score !== null && (
             <div className="text-center p-4 bg-white/[0.02] border border-white/10 rounded-none shadow-sm">
               <div className="text-3xl font-bold tracking-tight text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">{run.score}%</div>
@@ -59,7 +59,9 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
 
       <div>
         <h2 className="text-xl font-semibold tracking-tight text-white mb-4">Findings</h2>
-        <FindingsTable findings={findings || []} />
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <FindingsTable findings={findings || []} />
+        </div>
       </div>
     </div>
   )

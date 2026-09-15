@@ -20,8 +20,8 @@ export function AuditRunCard({ run, tenantName }: AuditRunCardProps) {
 
   return (
     <Link href={`/dashboard/tenants/${run.tenant_id}/runs/${run.id}`}>
-      <Card className="border border-white/10 bg-white/[0.02] rounded-none hover:bg-white/[0.04] transition-colors duration-300">
-        <CardContent className="flex items-center justify-between p-4">
+      <Card className="border border-white/10 bg-white/[0.02] rounded-none hover:bg-white/[0.04] hover:border-white/20 transition-all duration-300">
+        <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4">
           <div>
             <div className="font-medium tracking-tight text-white text-sm">
               {tenantName && <span className="mr-2 text-white/40 eyebrow">{tenantName}</span>}

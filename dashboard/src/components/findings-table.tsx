@@ -35,9 +35,9 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
         </Select>
       </div>
 
-      <div className="border border-white/10 overflow-hidden bg-white/[0.02] rounded-none">
-        <table className="w-full text-sm text-left divide-y divide-white/5">
-          <thead className="bg-white/[0.01] text-xs text-white/40 uppercase tracking-[0.1em] border-b border-white/10">
+      <div className="border border-white/10 overflow-x-auto bg-white/[0.02] rounded-none">
+        <table className="w-full min-w-[600px] text-sm text-left divide-y divide-white/5">
+          <thead className="bg-white/[0.01] text-xs text-white/40 uppercase tracking-[0.1em] border-b border-white/10 whitespace-nowrap">
             <tr>
               <th className="px-4 py-3 w-8"></th>
               <th className="px-4 py-3 font-medium">Check ID</th>

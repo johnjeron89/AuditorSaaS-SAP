@@ -14,15 +14,17 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ t
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex flex-wrap items-center gap-3">
             {tenant.name}
             <Badge variant="secondary" className="rounded-full bg-white/[0.05] text-white hover:bg-white/[0.1] border-white/10">{tenant.platform}</Badge>
           </h1>
           <p className="text-white/50 mt-1">Tenant Details & Audits</p>
         </div>
-        <RunAuditButton tenantId={tenant.id} />
+        <div className="w-full sm:w-auto">
+          <RunAuditButton tenantId={tenant.id} />
+        </div>
       </div>
 
       <div>

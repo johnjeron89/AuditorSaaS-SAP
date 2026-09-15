@@ -75,8 +75,8 @@ export default function NewTenantPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight text-white">Add New Tenant</h1>
+    <div className="max-w-2xl mx-auto px-4 space-y-6">
+      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Add New Tenant</h1>
       <Card className="border border-white/10 bg-white/[0.02] rounded-none">
         <CardHeader>
           <CardTitle className="text-xl tracking-tight text-white">Tenant Details</CardTitle>

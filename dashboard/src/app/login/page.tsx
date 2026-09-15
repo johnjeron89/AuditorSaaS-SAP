@@ -54,7 +54,7 @@ export default function LoginPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#050505] p-4">
         <div className="fixed inset-x-0 top-0 z-50 h-px bg-white/20" />
-        <Card className="w-full max-w-md border border-white/10 bg-white/[0.02] rounded-none">
+        <Card className="w-full max-w-md mx-4 sm:mx-auto border border-white/10 bg-white/[0.02] rounded-none animate-fade-in-up">
           <CardHeader className="space-y-2 text-center">
             <div className="flex justify-center mb-4">
               <div className="h-16 w-16 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center">
@@ -96,7 +96,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#050505] p-4">
       <div className="fixed inset-x-0 top-0 z-50 h-px bg-white/20" />
-      <Card className="w-full max-w-md border border-white/10 bg-white/[0.02] rounded-none">
+      <Card className="w-full max-w-md mx-4 sm:mx-auto border border-white/10 bg-white/[0.02] rounded-none animate-fade-in-up">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center mb-4">
             <Shield className="h-12 w-12 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
@@ -116,6 +116,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={loading}
+                className="min-h-[48px] sm:min-h-[40px]"
               />
             </div>
             <div className="space-y-2">
@@ -126,10 +127,11 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={loading}
+                className="min-h-[48px] sm:min-h-[40px]"
               />
             </div>
             {error && <div className="text-sm text-red-400 p-2 bg-red-500/10 border border-red-500/20 rounded-none">{error}</div>}
-            <Button type="submit" className="w-full bg-white text-black hover:bg-white/90 rounded-none" disabled={loading}>
+            <Button type="submit" className="w-full min-h-[48px] sm:min-h-[40px] bg-white text-black hover:bg-white/90 rounded-none" disabled={loading}>
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
