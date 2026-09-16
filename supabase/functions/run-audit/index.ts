@@ -1,24 +1,36 @@
 import { createServiceClient } from '../_shared/supabase-client.ts';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+
   if (req.method !== 'POST') {
-    return new Response('Method Not Allowed', { status: 405 });
+    return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
   }
 
   const authHeader = req.headers.get('Authorization');
   if (!authHeader) {
-    return new Response('Unauthorized', { status: 401 });
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 
   try {
     const supabase = createServiceClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) {
-      return new Response('Unauthorized', { status: 401 });
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const { tenant_id, framework } = await req.json();
-    if (!tenant_id) return new Response('Missing tenant_id', { status: 400 });
+    if (!tenant_id) {
+      return new Response(JSON.stringify({ error: 'Missing tenant_id' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     // Verify tenant exists
     const { data: tenant, error: tenantError } = await supabase
@@ -27,7 +39,9 @@ Deno.serve(async (req) => {
       .eq('id', tenant_id)
       .single();
 
-    if (tenantError || !tenant) return new Response('Tenant not found', { status: 404 });
+    if (tenantError || !tenant) {
+      return new Response(JSON.stringify({ error: 'Tenant not found' }), { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
 
     // Verify credentials exist for this tenant
     const { data: creds } = await supabase
@@ -39,7 +53,7 @@ Deno.serve(async (req) => {
     if (!creds || creds.length === 0) {
       return new Response(JSON.stringify({ error: 'No credentials found. Upload a service account key first.' }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
     
@@ -73,14 +87,14 @@ Deno.serve(async (req) => {
     if (jobsError) throw jobsError;
 
     return new Response(JSON.stringify({ audit_run_id: auditRun.id }), {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
   } catch (error: any) {
     console.error('Error starting audit:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 });

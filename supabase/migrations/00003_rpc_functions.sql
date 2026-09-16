@@ -7,7 +7,7 @@ create or replace function public.encrypt_credentials(
 returns uuid
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_key text;
@@ -32,7 +32,7 @@ begin
     p_tenant_id,
     'google_workspace',
     p_admin_email,
-    pgp_sym_encrypt(p_creds_json, v_key)
+    extensions.pgp_sym_encrypt(p_creds_json, v_key)
   )
   returning id into v_id;
 
@@ -47,7 +47,7 @@ create or replace function public.decrypt_credentials(
 returns table(credentials_json text, admin_email text)
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_key text;
@@ -63,7 +63,7 @@ begin
 
   return query
   select
-    pgp_sym_decrypt(c.encrypted_credentials, v_key)::text as credentials_json,
+    extensions.pgp_sym_decrypt(c.encrypted_credentials, v_key)::text as credentials_json,
     c.admin_email
   from public.credentials c
   where c.tenant_id = p_tenant_id
