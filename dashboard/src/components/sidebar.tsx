@@ -8,35 +8,23 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export function Sidebar() {
-  const pathname = usePathname()
-  const router = useRouter()
-  const supabase = createClient()
-  const [email, setEmail] = useState<string | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
+const links = [
+  { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+  { href: '/dashboard/tenants', label: 'Tenants', icon: Users },
+]
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) setEmail(user.email ?? null)
-    })
-  }, [supabase])
-
-  // Close sidebar on route change
-  useEffect(() => {
-    setIsOpen(false)
-  }, [pathname])
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/login')
-  }
-
-  const links = [
-    { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-    { href: '/dashboard/tenants', label: 'Tenants', icon: Users },
-  ]
-
-  const SidebarContent = () => (
+function SidebarContent({
+  pathname,
+  setIsOpen,
+  handleSignOut,
+  email
+}: {
+  pathname: string;
+  setIsOpen: (open: boolean) => void;
+  handleSignOut: () => void;
+  email: string | null;
+}) {
+  return (
     <>
       <div className="flex h-16 items-center justify-between px-6 text-white font-semibold tracking-tight text-xl gap-2 border-b border-white/5">
         <span>SAPVYRA<span className="text-white/40">.</span></span>
@@ -75,6 +63,23 @@ export function Sidebar() {
       </div>
     </>
   )
+}
+
+export function Sidebar({ userEmail }: { userEmail: string | null }) {
+  const pathname = usePathname()
+  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false)
+
+  // Close sidebar on route change
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
+  const handleSignOut = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
 
   return (
     <>
@@ -99,7 +104,12 @@ export function Sidebar() {
         "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-[#050505] text-white/60 border-r border-white/10 font-geist transition-transform duration-300 md:relative md:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <SidebarContent />
+        <SidebarContent 
+          pathname={pathname}
+          setIsOpen={setIsOpen}
+          handleSignOut={handleSignOut}
+          email={userEmail}
+        />
       </div>
     </>
   )

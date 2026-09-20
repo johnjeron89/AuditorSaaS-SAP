@@ -7,8 +7,12 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ t
   const { tenantId } = await params
   const supabase = await createClient()
 
-  const { data: tenant } = await supabase.from('tenants').select('*').eq('id', tenantId).single()
-  const { data: runs } = await supabase.from('audit_runs').select('*').eq('tenant_id', tenantId).order('created_at', { ascending: false })
+  const [tenantResult, runsResult] = await Promise.all([
+    supabase.from('tenants').select('*').eq('id', tenantId).single(),
+    supabase.from('audit_runs').select('*').eq('tenant_id', tenantId).order('created_at', { ascending: false })
+  ])
+  const tenant = tenantResult.data
+  const runs = runsResult.data
 
   if (!tenant) return <div>Tenant not found</div>
 

@@ -6,19 +6,21 @@ export default async function DashboardPage() {
   const supabase = await createClient()
 
   // Fetch stats (very basic implementation)
-  const { count: tenantsCount } = await supabase.from('tenants').select('*', { count: 'exact', head: true })
-  const { count: runsCount } = await supabase.from('audit_runs').select('*', { count: 'exact', head: true })
-  const { data: runs } = await supabase.from('audit_runs').select('score').not('score', 'is', null)
+  const [tenantsResult, runsResult, scoresResult, recentRunsResult] = await Promise.all([
+    supabase.from('tenants').select('*', { count: 'exact', head: true }),
+    supabase.from('audit_runs').select('*', { count: 'exact', head: true }),
+    supabase.from('audit_runs').select('score').not('score', 'is', null),
+    supabase.from('audit_runs').select('*, tenant:tenants(name)').order('created_at', { ascending: false }).limit(5),
+  ])
+  const tenantsCount = tenantsResult.count
+  const runsCount = runsResult.count
+  const runs = scoresResult.data
   
   const avgScore = runs && runs.length > 0 
     ? Math.round(runs.reduce((acc, curr) => acc + (curr.score || 0), 0) / runs.length)
     : 0
 
-  const { data: recentRuns } = await supabase
-    .from('audit_runs')
-    .select('*, tenant:tenants(name)')
-    .order('created_at', { ascending: false })
-    .limit(5)
+  const recentRuns = recentRunsResult.data
 
   return (
     <div className="space-y-8">

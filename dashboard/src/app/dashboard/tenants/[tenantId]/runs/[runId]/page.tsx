@@ -9,8 +9,12 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
   const { runId } = await params
   const supabase = await createClient()
 
-  const { data: run } = await supabase.from('audit_runs').select('*, tenant:tenants(name)').eq('id', runId).single()
-  const { data: findings } = await supabase.from('findings').select('*').eq('audit_run_id', runId)
+  const [runResult, findingsResult] = await Promise.all([
+    supabase.from('audit_runs').select('*, tenant:tenants(name)').eq('id', runId).single(),
+    supabase.from('findings').select('*').eq('audit_run_id', runId)
+  ])
+  const run = runResult.data
+  const findings = findingsResult.data
 
   if (!run) return <div>Run not found</div>
 

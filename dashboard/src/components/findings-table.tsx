@@ -1,21 +1,38 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Finding } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Select } from '@/components/ui/select'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronRight, ChevronLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
-export function FindingsTable({ findings }: { findings: Finding[] }) {
+export const FindingsTable = React.memo(function FindingsTable({ findings }: { findings: Finding[] }) {
   const [severityFilter, setSeverityFilter] = useState<string>('all')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [expandedRow, setExpandedRow] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 20
 
-  const filtered = findings.filter(f => {
-    if (severityFilter !== 'all' && f.severity !== severityFilter) return false
-    if (statusFilter !== 'all' && f.status !== statusFilter) return false
-    return true
-  })
+  const filtered = useMemo(() => {
+    return findings.filter(f => {
+      if (severityFilter !== 'all' && f.severity !== severityFilter) return false
+      if (statusFilter !== 'all' && f.status !== statusFilter) return false
+      return true
+    })
+  }, [findings, severityFilter, statusFilter])
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage)
+  
+  const paginatedFindings = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage
+    return filtered.slice(start, start + itemsPerPage)
+  }, [filtered, currentPage])
+
+  // Reset page when filters change
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [severityFilter, statusFilter])
 
   return (
     <div className="space-y-4">
@@ -47,7 +64,7 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5 text-white/60">
-            {filtered.map(finding => (
+            {paginatedFindings.map(finding => (
               <React.Fragment key={finding.id}>
                 <tr 
                   className="hover:bg-white/[0.02] cursor-pointer transition-colors"
@@ -99,7 +116,34 @@ export function FindingsTable({ findings }: { findings: Finding[] }) {
           </tbody>
         </table>
       </div>
+      
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-white/50">
+            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filtered.length)} of {filtered.length} entries
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="bg-transparent border-white/10 text-white hover:bg-white/[0.05]"
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="bg-transparent border-white/10 text-white hover:bg-white/[0.05]"
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
-}
-
+})
