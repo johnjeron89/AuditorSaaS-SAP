@@ -1,7 +1,8 @@
 import { createServiceClient } from '../_shared/supabase-client.ts';
 
+const FRONTEND_ORIGIN = Deno.env.get('FRONTEND_URL') || 'https://dashboard-eight-mu-41.vercel.app';
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': FRONTEND_ORIGIN,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
@@ -46,12 +47,12 @@ Deno.serve(async (req) => {
     // Verify credentials exist for this tenant
     const { data: creds } = await supabase
       .from('credentials')
-      .select('id')
+      .select('id, auth_method')
       .eq('tenant_id', tenant_id)
       .limit(1);
 
     if (!creds || creds.length === 0) {
-      return new Response(JSON.stringify({ error: 'No credentials found. Upload a service account key first.' }), {
+      return new Response(JSON.stringify({ error: 'No credentials found. Connect via OAuth or upload a service account key.' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });

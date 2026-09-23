@@ -1,5 +1,5 @@
 import { createServiceClient } from '../_shared/supabase-client.ts';
-import { GoogleApiClient } from '../_shared/google-auth.ts';
+import { GoogleApiClient, getGoogleAccessToken } from '../_shared/google-auth.ts';
 import { checkRegistry } from '../_shared/checks/index.ts';
 
 Deno.serve(async () => {
@@ -19,13 +19,7 @@ Deno.serve(async () => {
         const { data: runData } = await supabase.from('audit_runs').select('tenant_id').eq('id', job.audit_run_id).single();
         if (!runData) throw new Error('Run not found');
 
-        const { data: creds, error: credError } = await supabase.rpc('decrypt_credentials', { p_tenant_id: runData.tenant_id });
-        if (credError || !creds || !creds.length) throw new Error('Credentials not found');
-        
-        const saJson = JSON.parse(creds[0].credentials_json);
-        const adminEmail = creds[0].admin_email;
-
-        const googleApi = new GoogleApiClient(saJson, adminEmail);
+        const googleApi = await getGoogleAccessToken(runData.tenant_id, supabase);
         const handler = checkRegistry[job.job_type];
         if (!handler) throw new Error(`Unknown job type: ${job.job_type}`);
 
