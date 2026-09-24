@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { AuditProgress } from '@/components/audit-progress'
 import { FindingsTable } from '@/components/findings-table'
+import { CancelAuditButton } from '@/components/cancel-audit-button'
 import { Download } from 'lucide-react'
 
 export default async function AuditRunDetailPage({ params }: { params: Promise<{ tenantId: string; runId: string }> }) {
@@ -55,6 +56,9 @@ export default async function AuditRunDetailPage({ params }: { params: Promise<{
                 <Download className="h-4 w-4 mr-2" /> Download PDF
               </a>
             </Button>
+          )}
+          {run.status === 'running' && (
+            <CancelAuditButton auditRunId={run.id} />
           )}
         </div>
       </div>
