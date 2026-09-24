@@ -1,0 +1,33 @@
+{
+  "https://graph.microsoft.com/v1.0/users": {
+    "value": [
+      {
+        "id": "ms-u-001",
+        "userPrincipalName": "admin@acme-m365.com",
+        "displayName": "Global Admin",
+        "accountEnabled": true,
+        "signInActivity": {
+          "lastSignInDateTime": "2026-09-22T08:00:00Z"
+        }
+      }
+    ]
+  },
+  "https://graph.microsoft.com/v1.0/directoryRoles": {
+    "value": [
+      {
+        "id": "role-001",
+        "displayName": "Global Administrator",
+        "members": [{ "id": "ms-u-001" }]
+      }
+    ]
+  },
+  "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies": {
+    "value": [
+      {
+        "id": "ca-001",
+        "displayName": "Require MFA for all users",
+        "state": "enabled"
+      }
+    ]
+  }
+}

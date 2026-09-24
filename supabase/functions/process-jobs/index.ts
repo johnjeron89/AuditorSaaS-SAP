@@ -1,8 +1,11 @@
 import { createServiceClient } from '../_shared/supabase-client.ts';
-import { GoogleApiClient, getGoogleAccessToken } from '../_shared/google-auth.ts';
+import { GoogleApiClient } from '../_shared/google-auth.ts';
+import { getAuditGoogleClient } from '../_shared/data-client.ts';
 import { checkRegistry } from '../_shared/checks/index.ts';
 
-Deno.serve(async () => {
+Deno.serve(async (req) => {
+  const url = new URL(req.url);
+  const queryMockVariant = url.searchParams.get('mock');
   const supabase = createServiceClient();
 
   try {
@@ -19,7 +22,11 @@ Deno.serve(async () => {
         const { data: runData } = await supabase.from('audit_runs').select('tenant_id').eq('id', job.audit_run_id).single();
         if (!runData) throw new Error('Run not found');
 
-        const googleApi = await getGoogleAccessToken(runData.tenant_id, supabase);
+        const jobMockVariant = (job.payload as any)?.mockVariant || queryMockVariant;
+        const googleApi = await getAuditGoogleClient(runData.tenant_id, supabase, {
+          variant: jobMockVariant,
+          forceMock: Boolean(jobMockVariant)
+        });
         const handler = checkRegistry[job.job_type];
         if (!handler) throw new Error(`Unknown job type: ${job.job_type}`);
 

@@ -1,4 +1,5 @@
 import { createServiceClient } from '../_shared/supabase-client.ts';
+import { isMockAudit, resolveMockVariant } from '../_shared/data-client.ts';
 
 const FRONTEND_ORIGIN = Deno.env.get('FRONTEND_URL') || 'https://dashboard-eight-mu-41.vercel.app';
 const corsHeaders = {
@@ -28,7 +29,12 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const { tenant_id, framework } = await req.json();
+    const url = new URL(req.url);
+    const body = await req.json();
+    const { tenant_id, framework } = body;
+    const mockParam = url.searchParams.get('mock') || body.mock;
+    const mockActive = isMockAudit() || Boolean(mockParam);
+
     if (!tenant_id) {
       return new Response(JSON.stringify({ error: 'Missing tenant_id' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
@@ -44,18 +50,20 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Tenant not found' }), { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Verify credentials exist for this tenant
-    const { data: creds } = await supabase
-      .from('credentials')
-      .select('id, auth_method')
-      .eq('tenant_id', tenant_id)
-      .limit(1);
+    // Verify credentials exist for this tenant (skipped if mock mode)
+    if (!mockActive) {
+      const { data: creds } = await supabase
+        .from('credentials')
+        .select('id, auth_method')
+        .eq('tenant_id', tenant_id)
+        .limit(1);
 
-    if (!creds || creds.length === 0) {
-      return new Response(JSON.stringify({ error: 'No credentials found. Connect via OAuth or upload a service account key.' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      if (!creds || creds.length === 0) {
+        return new Response(JSON.stringify({ error: 'No credentials found. Connect via OAuth or upload a service account key.' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
     }
     
     const { data: auditRun, error: runError } = await supabase
@@ -81,7 +89,8 @@ Deno.serve(async (req) => {
     const jobs = jobTypes.map(job_type => ({
       audit_run_id: auditRun.id,
       job_type,
-      status: 'pending'
+      status: 'pending',
+      payload: mockActive ? { mockVariant: resolveMockVariant(mockParam) } : null
     }));
 
     const { error: jobsError } = await supabase.from('audit_jobs').insert(jobs);

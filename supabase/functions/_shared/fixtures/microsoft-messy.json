@@ -1,0 +1,33 @@
+{
+  "https://graph.microsoft.com/v1.0/users": {
+    "value": [
+      {
+        "id": "ms-u-999",
+        "userPrincipalName": "inattentive-admin@messy-m365.com",
+        "displayName": "Stale Admin",
+        "accountEnabled": true,
+        "signInActivity": {
+          "lastSignInDateTime": "2025-01-01T00:00:00Z"
+        }
+      }
+    ]
+  },
+  "https://graph.microsoft.com/v1.0/directoryRoles": {
+    "value": [
+      {
+        "id": "role-999",
+        "displayName": "Global Administrator",
+        "members": [
+          { "id": "ms-u-999" },
+          { "id": "ms-u-998" },
+          { "id": "ms-u-997" },
+          { "id": "ms-u-996" },
+          { "id": "ms-u-995" }
+        ]
+      }
+    ]
+  },
+  "https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies": {
+    "value": []
+  }
+}

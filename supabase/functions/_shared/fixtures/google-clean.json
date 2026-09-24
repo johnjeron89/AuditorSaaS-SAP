@@ -1,0 +1,156 @@
+{
+  "https://admin.googleapis.com/admin/directory/v1/users": {
+    "kind": "admin#directory#users",
+    "users": [
+      {
+        "id": "1001",
+        "primaryEmail": "alice.admin@acme-corp.com",
+        "isAdmin": true,
+        "isDelegatedAdmin": false,
+        "suspended": false,
+        "isEnforcedIn2Sv": true,
+        "isEnrolledIn2Sv": true,
+        "recoveryEmail": "alice.secops@corp-internal.net",
+        "lastLoginTime": "2026-09-20T10:15:30.000Z",
+        "creationTime": "2024-01-15T08:00:00.000Z"
+      },
+      {
+        "id": "1002",
+        "primaryEmail": "bob.admin@acme-corp.com",
+        "isAdmin": true,
+        "isDelegatedAdmin": false,
+        "suspended": false,
+        "isEnforcedIn2Sv": true,
+        "isEnrolledIn2Sv": true,
+        "recoveryEmail": "bob.secops@corp-internal.net",
+        "lastLoginTime": "2026-09-22T14:20:00.000Z",
+        "creationTime": "2024-02-01T08:00:00.000Z"
+      },
+      {
+        "id": "1003",
+        "primaryEmail": "carol.user@acme-corp.com",
+        "isAdmin": false,
+        "isDelegatedAdmin": false,
+        "suspended": false,
+        "isEnforcedIn2Sv": true,
+        "isEnrolledIn2Sv": true,
+        "recoveryEmail": "carol.backup@corp-internal.net",
+        "lastLoginTime": "2026-09-23T09:00:00.000Z",
+        "creationTime": "2024-03-10T08:00:00.000Z"
+      },
+      {
+        "id": "1004",
+        "primaryEmail": "david.user@acme-corp.com",
+        "isAdmin": false,
+        "isDelegatedAdmin": false,
+        "suspended": false,
+        "isEnforcedIn2Sv": true,
+        "isEnrolledIn2Sv": true,
+        "recoveryEmail": "david.backup@corp-internal.net",
+        "lastLoginTime": "2026-09-18T16:45:00.000Z",
+        "creationTime": "2024-04-05T08:00:00.000Z"
+      },
+      {
+        "id": "1005",
+        "primaryEmail": "stale.former@acme-corp.com",
+        "isAdmin": false,
+        "isDelegatedAdmin": false,
+        "suspended": true,
+        "isEnforcedIn2Sv": false,
+        "isEnrolledIn2Sv": false,
+        "lastLoginTime": "2025-01-01T00:00:00.000Z",
+        "creationTime": "2023-01-01T08:00:00.000Z"
+      }
+    ]
+  },
+  "https://admin.googleapis.com/admin/reports/v1/activity/all/applications/drive": {
+    "kind": "admin#reports#activities",
+    "items": [
+      {
+        "id": { "time": "2026-09-20T11:00:00.000Z", "uniqueQualifier": "drv_clean_1" },
+        "events": [
+          {
+            "name": "edit",
+            "type": "doc_edit",
+            "parameters": [{ "name": "doc_title", "value": "Quarterly Security Report" }]
+          }
+        ]
+      },
+      {
+        "id": { "time": "2026-09-21T09:30:00.000Z", "uniqueQualifier": "drv_clean_2" },
+        "events": [
+          {
+            "name": "view",
+            "type": "doc_view",
+            "parameters": [{ "name": "doc_title", "value": "Employee Handbook" }]
+          }
+        ]
+      }
+    ]
+  },
+  "https://admin.googleapis.com/admin/reports/v1/activity/all/applications/admin": {
+    "kind": "admin#reports#activities",
+    "items": [
+      {
+        "id": { "time": "2026-09-19T10:00:00.000Z", "uniqueQualifier": "adm_clean_1" },
+        "events": [
+          {
+            "name": "CHANGE_PASSWORD_POLICY",
+            "parameters": [
+              { "name": "MIN_LENGTH", "value": "16" },
+              { "name": "ENFORCE_STRONG_PASSWORD", "value": "true" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "https://admin.googleapis.com/admin/reports/v1/activity/all/applications/token": {
+    "kind": "admin#reports#activities",
+    "items": [
+      {
+        "id": { "time": "2026-09-15T12:00:00.000Z", "uniqueQualifier": "tok_clean_1" },
+        "events": [
+          {
+            "name": "authorize",
+            "parameters": [
+              { "name": "app_name", "value": "Internal Compliance Monitor" },
+              { "name": "scope", "value": "https://www.googleapis.com/auth/admin.directory.user.readonly" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "https://admin.googleapis.com/admin/reports/v1/activity/all/applications/login": {
+    "kind": "admin#reports#activities",
+    "items": [
+      {
+        "id": { "time": "2026-09-22T08:00:00.000Z", "uniqueQualifier": "log_clean_1" },
+        "events": [
+          {
+            "name": "login_success",
+            "parameters": [
+              { "name": "is_suspicious", "boolValue": false },
+              { "name": "login_type", "value": "google_password" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "https://admin.googleapis.com/admin/directory/v1/customer/my_customer/devices/mobile": {
+    "kind": "admin#directory#mobiledevices",
+    "result": [
+      {
+        "resourceId": "mob_clean_1",
+        "deviceId": "dev_001",
+        "model": "Pixel 9 Pro",
+        "os": "Android 15",
+        "status": "APPROVED",
+        "screenLockStatus": "ENFORCED",
+        "devicePasswordStatus": "COMPLIANT"
+      }
+    ]
+  }
+}
