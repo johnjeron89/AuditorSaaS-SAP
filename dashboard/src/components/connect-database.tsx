@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { createClient } from '@/lib/supabase/client'
 import { Loader2, Copy, Check, Database, Download } from 'lucide-react'
 
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://sbpjtynofivcddmctjnh.supabase.co'
+
 interface ConnectDatabaseProps {
   tenantId: string
   hasCredentials: boolean
@@ -33,12 +35,25 @@ export function ConnectDatabase({
     setError(null)
 
     try {
-      const { data, error: fnError } = await supabase.functions.invoke('generate-agent-key', {
-        body: { tenant_id: tenantId, db_engine: engine },
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+      if (sessionError || !session?.access_token) {
+        throw new Error('Your session has expired. Please sign in again.')
+      }
+
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-agent-key`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+        },
+        body: JSON.stringify({ tenant_id: tenantId, db_engine: engine }),
       })
 
-      if (fnError) throw fnError
-      if (data?.error) throw new Error(data.error)
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || `Server returned ${res.status}`)
+      }
 
       setApiKey(data.api_key)
     } catch (err: unknown) {

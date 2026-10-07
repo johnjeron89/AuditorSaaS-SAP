@@ -5,6 +5,8 @@ import type { DbCheckDefinition } from '../_shared/db-check-definitions.ts';
 const corsHeaders: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-agent-api-key, x-tenant-id',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+  'Access-Control-Max-Age': '86400',
 };
 
 function jsonResponse(data: unknown, status = 200): Response {
