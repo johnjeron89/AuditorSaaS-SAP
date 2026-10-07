@@ -81,6 +81,7 @@ export default function NewTenantPage() {
               <Select value={platform} onChange={(e) => setPlatform(e.target.value)} required>
                 <option value="google_workspace">Google Workspace</option>
                 <option value="microsoft_365">Microsoft 365</option>
+                <option value="database">Database (PostgreSQL / MySQL)</option>
               </Select>
             </div>
 

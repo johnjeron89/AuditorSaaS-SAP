@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { RunAuditButton } from '@/components/run-audit-button'
 import { AuditRunCard } from '@/components/audit-run-card'
 import { ConnectTenant } from '@/components/connect-tenant'
+import { ConnectDatabase } from '@/components/connect-database'
 import { ConnectToast } from '@/components/connect-toast'
 
 export default async function TenantDetailPage({ params }: { params: Promise<{ tenantId: string }> }) {
@@ -13,7 +14,7 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ t
   const [tenantResult, runsResult, credsResult] = await Promise.all([
     supabase.from('tenants').select('*').eq('id', tenantId).single(),
     supabase.from('audit_runs').select('*').eq('tenant_id', tenantId).order('created_at', { ascending: false }),
-    supabase.from('credentials').select('id, auth_method, platform, admin_email, created_at').eq('tenant_id', tenantId).limit(1),
+    supabase.from('credentials').select('id, auth_method, platform, admin_email, metadata, created_at').eq('tenant_id', tenantId).limit(1),
   ])
   const tenant = tenantResult.data
   const runs = runsResult.data
@@ -44,12 +45,21 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ t
       </div>
 
       {/* Connection Status */}
-      <ConnectTenant
-        tenantId={tenant.id}
-        platform={tenant.platform}
-        hasCredentials={hasCredentials}
-        credentialMethod={credentials?.[0]?.auth_method}
-      />
+      {tenant.platform === 'database' ? (
+        <ConnectDatabase
+          tenantId={tenant.id}
+          hasCredentials={hasCredentials}
+          lastAgentSeenAt={(credentials?.[0]?.metadata as Record<string, unknown>)?.last_agent_seen_at as string | null}
+          dbEngine={(credentials?.[0]?.metadata as Record<string, unknown>)?.db_engine as string | null}
+        />
+      ) : (
+        <ConnectTenant
+          tenantId={tenant.id}
+          platform={tenant.platform}
+          hasCredentials={hasCredentials}
+          credentialMethod={credentials?.[0]?.auth_method}
+        />
+      )}
 
       <div>
         <h2 className="text-xl font-semibold tracking-tight text-white mb-4">Audit Runs</h2>

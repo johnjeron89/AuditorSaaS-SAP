@@ -9,7 +9,7 @@ export interface Credential {
   id: string;
   tenant_id: string;
   platform: string;
-  auth_method: 'service_account' | 'oauth';
+  auth_method: 'service_account' | 'oauth' | 'agent_push';
   admin_email: string | null;
   metadata: Record<string, unknown>;
   created_at: string;

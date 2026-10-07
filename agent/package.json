@@ -1,0 +1,19 @@
+{
+  "name": "auditer-saas-agent",
+  "version": "1.0.0",
+  "description": "Database audit agent scripts for Auditer SaaS",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "audit:postgres": "npx tsx postgres-audit-agent.ts",
+    "audit:mysql": "npx tsx mysql-audit-agent.ts"
+  },
+  "dependencies": {
+    "pg": "^8.13.0",
+    "mysql2": "^3.11.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "@types/pg": "^8.11.0"
+  }
+}
